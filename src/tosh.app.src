@@ -5,7 +5,11 @@
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  poolboy,
+                  protobuffs,
+                  riak_pb,
+                  riakc
                  ]},
   {mod, { tosh_app, []}},
   {env, []}
