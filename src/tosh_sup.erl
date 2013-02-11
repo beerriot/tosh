@@ -39,7 +39,9 @@ init([]) ->
                 {name, {local, clients}},
                 {worker_module, tosh_riakc_poolboy_shim}],
     ClientPool = poolboy:child_spec(clients, PoolArgs, [IP, Port]),
-    ToshDispatch = [{['*'], tosh_base_resource,
-                     [{port, ?TOSH_PORT}]} ],
+    ToshDispatch = [{[], tosh_base_resource,
+                     [{port, ?TOSH_PORT}]},
+                    {[bucket], tosh_bucket_resource,
+                     [{port, ?TOSH_PORT}]}],
     GomaSupSpec = goma:child_spec(tosh, {127,0,0,1}, ?TOSH_PORT, ToshDispatch),
     {ok, { {one_for_one, 5, 10}, [ClientPool, GomaSupSpec]} }.
