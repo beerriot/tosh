@@ -42,6 +42,8 @@ init([]) ->
     ToshDispatch = [{[], tosh_base_resource,
                      [{port, ?TOSH_PORT}]},
                     {[bucket], tosh_bucket_resource,
+                     [{port, ?TOSH_PORT}]},
+                    {[bucket, '*'], tosh_key_resource,
                      [{port, ?TOSH_PORT}]}],
     GomaSupSpec = goma:child_spec(tosh, {127,0,0,1}, ?TOSH_PORT, ToshDispatch),
     {ok, { {one_for_one, 5, 10}, [ClientPool, GomaSupSpec]} }.
