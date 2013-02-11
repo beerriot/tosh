@@ -24,9 +24,8 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    RanchSupSpec = {ranch_sup, {ranch_sup, start_link, []},
-                    permanent, 5000, supervisor, [ranch_sup]},
-    ListenerSpec = ranch:child_spec(tosh, 100,
-                                    ranch_tcp, [{port, 7070}],
-                                    tosh_gopher, []),
-    {ok, { {rest_for_one, 5, 10}, [RanchSupSpec, ListenerSpec]} }.
+    ToshDispatch = [ {['*'], goma_fs_resource,
+                      [{port, 7070},
+                       {base, "/Users/bryan/log"}]} ],
+    GomaSupSpec = goma:child_spec(tosh, {127,0,0,1}, 7070, ToshDispatch),
+    {ok, { {one_for_one, 5, 10}, [GomaSupSpec]} }.
