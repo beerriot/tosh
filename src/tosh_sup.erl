@@ -12,6 +12,8 @@
 -define(DEFAULT_RIAK_IP, "127.0.0.1").
 -define(DEFAULT_RIAK_PORT, 8087).
 
+-define(TOSH_PORT, 7070).
+
 %% ===================================================================
 %% API functions
 %% ===================================================================
@@ -37,8 +39,7 @@ init([]) ->
                 {name, {local, clients}},
                 {worker_module, tosh_riakc_poolboy_shim}],
     ClientPool = poolboy:child_spec(clients, PoolArgs, [IP, Port]),
-    ToshDispatch = [ {['*'], goma_fs_resource,
-                      [{port, 7070},
-                       {base, "/Users/bryan/log"}]} ],
-    GomaSupSpec = goma:child_spec(tosh, {127,0,0,1}, 7070, ToshDispatch),
+    ToshDispatch = [{['*'], tosh_base_resource,
+                     [{port, ?TOSH_PORT}]} ],
+    GomaSupSpec = goma:child_spec(tosh, {127,0,0,1}, ?TOSH_PORT, ToshDispatch),
     {ok, { {one_for_one, 5, 10}, [ClientPool, GomaSupSpec]} }.
