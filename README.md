@@ -26,7 +26,7 @@ parameters. By default, it looks like this:
 To build Tosh, use rebar:
 
 ```shell
-rebar compile generate
+rebar get-deps compile generate
 ```
 
 ## Starting
